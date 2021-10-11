@@ -51,7 +51,7 @@ namespace LevelEditingViewportUtils
 
 
 	void SetRealtimeOverride(bool bShouldBeRealtime, FText SystemDisplayName);
-	void RemoveRealtimeOverride();
+	void RemoveRealtimeOverride(FText SystemDisplayName);
 	bool ToggleRealtime();
 	void SetRealtime(bool bInRealtime);
 	bool IsRealtime();
