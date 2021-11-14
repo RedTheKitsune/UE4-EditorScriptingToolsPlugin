@@ -11,14 +11,16 @@
 
 #define LOCTEXT_NAMESPACE "DetailCustomizationTypes"
 
-TSharedRef<SWidget> FPropertyWidgetHelpers::UnknownPropertyWidget =   SNew(SBorder)
+const FText FPropertyWidgetHelpers::UnknownPropertyText = LOCTEXT("UnknownProperty", "Unknown Property");
+
+TSharedRef<SWidget> FPropertyWidgetHelpers::UnknownPropertyWidget = SNew(SBorder)
 																			.Padding(0.0f)
 																			.HAlign(HAlign_Fill)
 																			.VAlign(VAlign_Fill)
 																			.BorderImage(FEditorStyle::GetBrush("NoBorder"))
 																			[
 																				SNew(STextBlock)
-																				.Text(LOCTEXT("UnknownPropertyText", "Unknown Property"))
+																				.Text(FPropertyWidgetHelpers::UnknownPropertyText)
 																			];
 
 
