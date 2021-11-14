@@ -328,18 +328,15 @@ void SBluEdModeWidget::Construct(const FArguments& InArgs)
 								SNew(SVerticalBox)
 								+SVerticalBox::Slot()
 								.AutoHeight()
+								.HAlign(HAlign_Fill)
 								[
-									SNew(SScrollBox)
-									.ExternalScrollbar(HorizontalScrollbar)
-									.Orientation(Orient_Horizontal)
-									+SScrollBox::Slot()
-									[
-										SAssignNew(ToolkitWidgetContainer, SBox)
-										.Visibility(this, &SBluEdModeWidget::GetSectionWidgetVisibility, EBluEdModeWidgetSectionsVisibility::ToolkitWidget)
-									]
+									SAssignNew(ToolkitWidgetContainer, SBox)
+									.Visibility(this, &SBluEdModeWidget::GetSectionWidgetVisibility, EBluEdModeWidgetSectionsVisibility::ToolkitWidget)
+									.HAlign(HAlign_Fill)
 								]
 								+ SVerticalBox::Slot()
 								.Padding(1.0f)
+								.HAlign(HAlign_Fill)
 								[
 									SNew(SVerticalBox)
 									.Visibility(this, &SBluEdModeWidget::GetSectionWidgetVisibility, EBluEdModeWidgetSectionsVisibility::DetailsView)
@@ -353,6 +350,7 @@ void SBluEdModeWidget::Construct(const FArguments& InArgs)
 									.Padding(2.0f)
 									.HAlign(HAlign_Right)
 									.AutoHeight()
+									.HAlign(HAlign_Fill)
 									[
 										SNew(SButton)
 										.ContentPadding(FMargin(4.0f,1.0f))
