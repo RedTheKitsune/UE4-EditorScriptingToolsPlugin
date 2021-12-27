@@ -56,8 +56,8 @@ void FEditorUserDefinedCommands::RegisterCommands()
 
 		UI_USER_DEFINED_COMMAND(
 			Command,
-			*CommandIdStr,
-			*CommandNameStr,
+			CommandIdStr,
+			CommandNameStr,
 			"Executes Action By Index.",
 			EUserInterfaceActionType::None,
 			ActionsAsset->GetActiveChord(EMultipleKeyBindingIndex::Primary, Index),
