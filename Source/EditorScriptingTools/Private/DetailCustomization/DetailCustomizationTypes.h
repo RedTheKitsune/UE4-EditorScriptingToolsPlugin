@@ -12,7 +12,6 @@
 class FPropertyWidgetHelpers
 {
 public:
-	static const FText UnknownPropertyText;
 	static TSharedRef<class SWidget> UnknownPropertyWidget;
 };
 
