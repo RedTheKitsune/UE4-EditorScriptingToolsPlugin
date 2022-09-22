@@ -18,7 +18,7 @@ namespace LevelEditorUtils
 
 		if (GEditor != nullptr)
 		{
-			if (GEditor->bIsSimulatingInEditor)
+			if (GEditor->IsSimulateInEditorInProgress())
 			{
 				return EEditorState::SimulatingInEditor;
 			}

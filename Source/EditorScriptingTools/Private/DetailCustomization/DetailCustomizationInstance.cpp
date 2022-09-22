@@ -162,7 +162,7 @@ class UWorld* UDetailCustomizationInstance::GetWorld() const
 	if (GEditor != nullptr)
 
 	{
-		if (GEditor->bIsSimulatingInEditor)
+		if (GEditor->IsSimulateInEditorInProgress())
 		{
 			return GEditor->GetPIEWorldContext()->World();
 		}

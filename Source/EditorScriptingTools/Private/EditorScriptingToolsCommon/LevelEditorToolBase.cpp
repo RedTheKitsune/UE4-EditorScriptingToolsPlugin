@@ -27,7 +27,7 @@ class UWorld* ULevelEditorToolBase::GetWorld() const
 	if (GWorld)
 	{
 		// When in 'Simulate' mode, the editor mode tools will actually interact with the PIE world
-		if (GEditor->bIsSimulatingInEditor)
+		if (GEditor->IsSimulateInEditorInProgress())
 		{
 			return GEditor->GetPIEWorldContext()->World();
 		}
