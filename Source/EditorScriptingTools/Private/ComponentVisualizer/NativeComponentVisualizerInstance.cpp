@@ -13,10 +13,6 @@
 #include "LevelEditorUtils.h"
 #include "EditorUserWidget.h"
 
-
-PRAGMA_DISABLE_OPTIMIZATION
-
-
 FNativeComponentVisualizerInstance::FNativeComponentVisualizerInstance(UComponentVisualizerUtilityBlueprint* VisualizerBlueprint)
 	: InstanceWeakPtr(nullptr)
 	, InstanceBlueprintWeakPtr(VisualizerBlueprint)
@@ -346,6 +342,3 @@ void FNativeComponentVisualizerInstance::HandleAnyBlueprintReinstanced()
 {
 	CreateInstance();
 }
-
-
-PRAGMA_ENABLE_OPTIMIZATION
