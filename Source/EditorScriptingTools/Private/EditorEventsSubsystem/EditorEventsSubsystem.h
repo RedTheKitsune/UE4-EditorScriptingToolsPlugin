@@ -111,8 +111,8 @@ private:
 	void HandleApplicationPreInputKeyDownListener(const FKeyEvent& InKeyEvent);
 	void HandleApplicationMousePreInputButtonDownListener(const FPointerEvent& MouseEvent);
 
-	void HandleWorldPreSaved(uint32 SaveFlags, UWorld* World);
-	void HandleWorldPostSaved(uint32 SaveFlags, UWorld* World, bool bSuccess);
+	void HandleWorldPreSaved(UWorld* World, FObjectPreSaveContext Context);
+	void HandleWorldPostSaved(UWorld* World, FObjectPostSaveContext Context);
 
 	void HandleActionExecuted(UEditorUserDefinedActions* ActionsAsset, int32 ActionIndex, bool bIsRepeated);
 

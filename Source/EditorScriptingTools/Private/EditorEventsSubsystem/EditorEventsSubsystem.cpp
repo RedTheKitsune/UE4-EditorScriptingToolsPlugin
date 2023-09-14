@@ -13,6 +13,7 @@
 #include "Editor/EditorEngine.h"
 #include "EditorActorFolders.h"
 #include "Framework/Application/SlateApplication.h"
+#include "UObject/ObjectSaveContext.h"
 
 #include "EditorUserDefinedActions.h"
 #include "EditorUserDefinedCommands.h"
@@ -47,8 +48,8 @@ void UEditorEventsSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		FEditorDelegates::OnPreSwitchBeginPIEAndSIE.AddUObject(this, &UEditorEventsSubsystem::HandlePreSwitchBeginPIEAndSIE);
 		FEditorDelegates::OnSwitchBeginPIEAndSIE.AddUObject(this, &UEditorEventsSubsystem::HandleSwitchBeginPIEAndSIE);
 		FEditorDelegates::OnAssetsPreDelete.AddUObject(this, &UEditorEventsSubsystem::HandleAssetsPreDelete);
-		FEditorDelegates::PreSaveWorld.AddUObject(this, &UEditorEventsSubsystem::HandleWorldPreSaved);
-		FEditorDelegates::PostSaveWorld.AddUObject(this, &UEditorEventsSubsystem::HandleWorldPostSaved);
+		FEditorDelegates::PreSaveWorldWithContext.AddUObject(this, &UEditorEventsSubsystem::HandleWorldPreSaved);
+		FEditorDelegates::PostSaveWorldWithContext.AddUObject(this, &UEditorEventsSubsystem::HandleWorldPostSaved);
 	}
 
 	{
@@ -95,8 +96,8 @@ void UEditorEventsSubsystem::Deinitialize()
 		FEditorDelegates::OnPreSwitchBeginPIEAndSIE.RemoveAll(this);
 		FEditorDelegates::OnSwitchBeginPIEAndSIE.RemoveAll(this);
 		FEditorDelegates::OnAssetsPreDelete.RemoveAll(this);
-		FEditorDelegates::PreSaveWorld.RemoveAll(this);
-		FEditorDelegates::PostSaveWorld.RemoveAll(this);
+		FEditorDelegates::PreSaveWorldWithContext.RemoveAll(this);
+		FEditorDelegates::PostSaveWorldWithContext.RemoveAll(this);
 	}
 
 	{
@@ -256,14 +257,14 @@ void UEditorEventsSubsystem::HandleApplicationMousePreInputButtonDownListener(co
 	OnMouseButtonDown.Broadcast(MouseEvent, LevelEditingViewportUtils::IsEditingViewportFocused());
 }
 
-void UEditorEventsSubsystem::HandleWorldPreSaved(uint32 SaveFlags, UWorld* World)
+void UEditorEventsSubsystem::HandleWorldPreSaved(UWorld* World, FObjectPreSaveContext Context)
 {
 	OnPreSaveWorld.Broadcast(World);
 }
 
-void UEditorEventsSubsystem::HandleWorldPostSaved(uint32 SaveFlags, UWorld* World, bool bSuccess)
+void UEditorEventsSubsystem::HandleWorldPostSaved(UWorld* World, FObjectPostSaveContext Context)
 {
-	OnPostSaveWorld.Broadcast(World, bSuccess);
+	OnPostSaveWorld.Broadcast(World, Context.SaveSucceeded());
 }
 
 void UEditorEventsSubsystem::HandleActionExecuted(UEditorUserDefinedActions* ActionsAsset, int32 ActionIndex , bool bIsRepeated)

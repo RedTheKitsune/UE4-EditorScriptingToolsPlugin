@@ -9,6 +9,8 @@
 #include "Widgets/Layout/SBorder.h"
 #include "Widgets/DeclarativeSyntaxSupport.h"
 
+#define LOCTEXT_NAMESPACE "UMG"
+
 TSharedRef<SWidget> FPropertyWidgetHelpers::UnknownPropertyWidget = SNew(SBorder)
 																			.Padding(0.0f)
 																			.HAlign(HAlign_Fill)
