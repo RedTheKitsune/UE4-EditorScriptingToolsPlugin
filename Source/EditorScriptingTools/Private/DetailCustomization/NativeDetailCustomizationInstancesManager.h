@@ -5,7 +5,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "HAL/CriticalSection.h"
 
 class FNativeDetailCustomizationInstance;
 

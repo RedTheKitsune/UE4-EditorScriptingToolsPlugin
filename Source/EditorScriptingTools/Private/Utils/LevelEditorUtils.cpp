@@ -6,6 +6,7 @@
 
 #include "Editor.h"
 #include "EditorScriptingToolsTypes.h"
+#include "Editor/Transactor.h"
 
 
 #define LOCTEXT_NAMESPACE "LevelEditorUtils"
@@ -59,7 +60,7 @@ namespace LevelEditorUtils
 
 	void MarkActorComponentsRenderStateDirty(AActor* InActor)
 	{
-		if (InActor != nullptr && !InActor->IsPendingKill())
+		if (IsValid(InActor))
 		{
 			InActor->MarkComponentsRenderStateDirty();
 		}
@@ -67,7 +68,7 @@ namespace LevelEditorUtils
 
 	void RerunActorConstructionScripts(AActor* InActor)
 	{
-		if (InActor != nullptr && !InActor->IsPendingKill())
+		if (IsValid(InActor))
 		{
 			InActor->RerunConstructionScripts();
 		}

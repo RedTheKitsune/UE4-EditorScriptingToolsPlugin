@@ -65,7 +65,7 @@ void SPropertiesBrowser::Construct(const FArguments& InArgs)
 					.HAlign(HAlign_Fill)
 					[
 						SNew(SBorder)
-						.BorderImage(FEditorStyle::GetBrush("ExpandableButton.Background"))
+						.BorderImage(FAppStyle::GetBrush("ExpandableButton.Background"))
 						.VAlign(VAlign_Center)
 						.ForegroundColor(FCoreStyle::Get().GetSlateColor("InvertedForeground"))
 						.BorderBackgroundColor(FLinearColor::Black)
@@ -75,7 +75,7 @@ void SPropertiesBrowser::Construct(const FArguments& InArgs)
 							[
 								SNew(STextBlock)
 								.Text(this, &SPropertiesBrowser::GetClassName)
-								.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+								.TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
 							]
 						]
 					]
@@ -84,16 +84,16 @@ void SPropertiesBrowser::Construct(const FArguments& InArgs)
 					.AutoWidth()
 					[
 						SNew(SButton)
-						.ButtonStyle(FEditorStyle::Get(), "HoverHintOnly")
+						.ButtonStyle(FAppStyle::Get(), "HoverHintOnly")
 						.OnClicked(this, &SPropertiesBrowser::OpenClassPickerDialog)
 						.VAlign(VAlign_Center)
 						.ToolTipText(LOCTEXT("PickObject", "Pick Object"))
 						[
 							SNew(STextBlock)
 							.ColorAndOpacity(FLinearColor(0.65f, 0.4f, 0.15f, 1.0f))
-							.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
-							.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.10"))
-							.Text(FEditorFontGlyphs::List)
+							.TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
+							.Font(FAppStyle::Get().GetFontStyle("FontAwesome.10"))
+							//.Text(FEditorFontGlyphs::List)
 						]
 					]
 					+ SHorizontalBox::Slot()
@@ -225,16 +225,16 @@ void SPropertiesBrowser::FillPropertiesNamesList()
 			.HAlign(HAlign_Right)
 			[
 				SNew(SButton)
-				.ButtonStyle(FEditorStyle::Get(), "HoverHintOnly")
+				.ButtonStyle(FAppStyle::Get(), "HoverHintOnly")
 				.OnClicked(this, &SPropertiesBrowser::ClipboardCopy)
 				.VAlign(VAlign_Center)
 				.ToolTipText(LOCTEXT("ClipboardCopy", "Copy To Clipboard"))
 				[
 					SNew(STextBlock)
 					.ColorAndOpacity(FLinearColor(0.65f, 0.4f, 0.15f, 1.0f))
-					.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
-					.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.10"))
-					.Text(FEditorFontGlyphs::Clipboard)
+					.TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
+					.Font(FAppStyle::Get().GetFontStyle("FontAwesome.10"))
+					//.Text(FEditorFontGlyphs::Clipboard)
 				]
 			]
 		);

@@ -13,6 +13,8 @@
 #include "LevelEditorUtils.h"
 #include "EditorUserWidget.h"
 
+
+
 FNativeComponentVisualizerInstance::FNativeComponentVisualizerInstance(UComponentVisualizerUtilityBlueprint* VisualizerBlueprint)
 	: InstanceWeakPtr(nullptr)
 	, InstanceBlueprintWeakPtr(VisualizerBlueprint)
@@ -52,7 +54,7 @@ void FNativeComponentVisualizerInstance::DestroyInstanceIfNeeded()
 		
 		InstanceWeakPtr->Rename(nullptr, GetTransientPackage());
 		InstanceWeakPtr->RemoveFromRoot();
-		InstanceWeakPtr->MarkPendingKill();
+		InstanceWeakPtr->MarkAsGarbage();
 		InstanceWeakPtr = nullptr;
 	}
 }
