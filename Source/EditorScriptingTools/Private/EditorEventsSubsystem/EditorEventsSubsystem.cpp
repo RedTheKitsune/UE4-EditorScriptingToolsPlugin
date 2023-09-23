@@ -14,6 +14,7 @@
 #include "EditorActorFolders.h"
 #include "Framework/Application/SlateApplication.h"
 #include "UObject/ObjectSaveContext.h"
+#include "EditorModeManager.h"
 
 #include "EditorUserDefinedActions.h"
 #include "EditorUserDefinedCommands.h"
@@ -32,8 +33,7 @@ void UEditorEventsSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	//
 	{
-		FEditorDelegates::EditorModeIDEnter.AddUObject(this, &UEditorEventsSubsystem::HandleEditorModeEntered);
-		FEditorDelegates::EditorModeIDExit.AddUObject(this, &UEditorEventsSubsystem::HandleEditorModeExited);
+		GLevelEditorModeTools().OnEditorModeIDChanged().AddUObject(this, &UEditorEventsSubsystem::HandleEditorModeChanged);
 		FEditorDelegates::OnMapOpened.AddUObject(this, &UEditorEventsSubsystem::HandleMapOpened);
 		FEditorDelegates::OnEditorCameraMoved.AddUObject(this, &UEditorEventsSubsystem::HandleEditorCameraMoved);
 		FEditorDelegates::OnDollyPerspectiveCamera.AddUObject(this, &UEditorEventsSubsystem::HandleDollyPerspectiveCamera);
@@ -53,9 +53,9 @@ void UEditorEventsSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	}
 
 	{
-		FActorFolders::OnFolderCreate.AddUObject(this, &UEditorEventsSubsystem::HandleFolderCreate);
-		FActorFolders::OnFolderMove.AddUObject(this, &UEditorEventsSubsystem::HandleFolderMove);
-		FActorFolders::OnFolderDelete.AddUObject(this, &UEditorEventsSubsystem::HandleFolderDelete);
+		FActorFolders::OnFolderCreated.AddUObject(this, &UEditorEventsSubsystem::HandleFolderCreated);
+		FActorFolders::OnFolderMoved.AddUObject(this, &UEditorEventsSubsystem::HandleFolderMoved);
+		FActorFolders::OnFolderDeleted.AddUObject(this, &UEditorEventsSubsystem::HandleFolderDeleted);
 	}
 
 
@@ -80,8 +80,7 @@ void UEditorEventsSubsystem::Deinitialize()
 {
 	//
 	{
-		FEditorDelegates::EditorModeIDEnter.RemoveAll(this);
-		FEditorDelegates::EditorModeIDExit.RemoveAll(this);
+		GLevelEditorModeTools().OnEditorModeIDChanged().RemoveAll(this);
 		FEditorDelegates::OnMapOpened.RemoveAll(this);
 		FEditorDelegates::OnEditorCameraMoved.RemoveAll(this);
 		FEditorDelegates::OnDollyPerspectiveCamera.RemoveAll(this);
@@ -101,9 +100,9 @@ void UEditorEventsSubsystem::Deinitialize()
 	}
 
 	{
-		FActorFolders::OnFolderCreate.RemoveAll(this);
-		FActorFolders::OnFolderMove.RemoveAll(this);
-		FActorFolders::OnFolderDelete.RemoveAll(this);
+		FActorFolders::OnFolderCreated.RemoveAll(this);
+		FActorFolders::OnFolderMoved.RemoveAll(this);
+		FActorFolders::OnFolderDeleted.RemoveAll(this);
 	}
 
 	if (FLevelEditorModule* LevelEditorModulePtr = FModuleManager::GetModulePtr<FLevelEditorModule>("LevelEditor"))
@@ -127,14 +126,16 @@ void UEditorEventsSubsystem::HandleMapOpened(const FString& Filename, bool bAsTe
 	OnMapOpened.Broadcast(Filename);
 }
 
-void UEditorEventsSubsystem::HandleEditorModeEntered(const FEditorModeID& ModeID)
+void UEditorEventsSubsystem::HandleEditorModeChanged(const FEditorModeID& ModeID, bool bEntered)
 {
-	OnEditorModeEnter.Broadcast(ModeID);
-}
-
-void UEditorEventsSubsystem::HandleEditorModeExited(const FEditorModeID& ModeID)
-{
-	OnEditorModeExit.Broadcast(ModeID);
+	if (bEntered)
+	{
+		OnEditorModeEnter.Broadcast(ModeID);
+	}
+	else
+	{
+		OnEditorModeExit.Broadcast(ModeID);
+	}
 }
 
 void UEditorEventsSubsystem::HandleEditorCameraMoved(const FVector& ViewLocation, const FRotator& ViewRotation, ELevelViewportType ViewportType, int32 ViewIndex)
@@ -203,19 +204,19 @@ void UEditorEventsSubsystem::HandleAssetsPreDelete(const TArray<UObject*>& Asset
 }
 
 
-void UEditorEventsSubsystem::HandleFolderCreate(UWorld& InWorld, FName NewPath)
+void UEditorEventsSubsystem::HandleFolderCreated(UWorld& InWorld, const FFolder& NewPath)
 {
-	OnWorldFolderCreate.Broadcast(NewPath);
+	OnWorldFolderCreate.Broadcast(NewPath.GetPath());
 }
 
-void UEditorEventsSubsystem::HandleFolderMove(UWorld& InWorld, FName OldPath, FName NewPath)
+void UEditorEventsSubsystem::HandleFolderMoved(UWorld& InWorld, const FFolder& OldPath, const FFolder& NewPath)
 {
-	OnWorldFolderMove.Broadcast(OldPath, NewPath);
+	OnWorldFolderMove.Broadcast(OldPath.GetPath(), NewPath.GetPath());
 }
 
-void UEditorEventsSubsystem::HandleFolderDelete(UWorld& InWorld, FName Path)
+void UEditorEventsSubsystem::HandleFolderDeleted(UWorld& InWorld, const FFolder& Path)
 {
-	OnWorldFolderDelete.Broadcast(Path);
+	OnWorldFolderDelete.Broadcast(Path.GetPath());
 }
 
 void UEditorEventsSubsystem::HandleActorSelectionChanged(const TArray<UObject*>& NewSelection, bool bForceRefresh /*= false*/)

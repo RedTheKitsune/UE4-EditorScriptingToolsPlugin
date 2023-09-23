@@ -54,9 +54,14 @@ void ULevelEditorToolBase::DrawLine(FDummyStruct DrawPrimitivesContext, FVector 
 	LevelViewportPrimitiveDrawingUtils::DrawLine(GetDrawPrimitivesContext(), Start, End, Color, DepthPriorityGroup, Thickness, DepthBias);
 }
 
-void ULevelEditorToolBase::DrawTriangle(FDummyStruct DrawPrimitivesContext, FVector PointA, FVector PointB, FVector PointC, FLinearColor Color /*= FLinearColor::White*/, bool bDrawLines /*= false*/, UMaterialInterface* Material /*= nullptr*/, EDepthPriorityGroup DepthPriorityGroup /*= EDepthPriorityGroup::World*/, bool bDisableBackfaceCulling /*= false*/, bool bReceivesDecals /*= false*/)
+void ULevelEditorToolBase::DrawTriangle(FDummyStruct DrawPrimitivesContext, FVector PointA, FVector PointB, FVector PointC, FLinearColor Color /*= FLinearColor::White*/, bool bDrawLines /*= false*/, UMaterialInterface* Material /*= nullptr*/, EDepthPriorityGroup DepthPriorityGroup /*= EDepthPriorityGroup::World*/, bool bDisableBackfaceCulling /*= false*/)
 {
-	LevelViewportPrimitiveDrawingUtils::DrawTriangle(GetDrawPrimitivesContext(), PointA, PointB, PointC, Color, bDrawLines, Material, DepthPriorityGroup, bDisableBackfaceCulling, bReceivesDecals);
+	ULevelEditorToolBase::DrawTriangleDecaled(DrawPrimitivesContext, PointA, PointB, PointC, Color, bDrawLines, Material, DepthPriorityGroup, bDisableBackfaceCulling, FDecalChannels::MakeDisabled());
+}
+
+void ULevelEditorToolBase::DrawTriangleDecaled(FDummyStruct DrawPrimitivesContext, FVector PointA, FVector PointB, FVector PointC, FLinearColor Color /*= FLinearColor::White*/, bool bDrawLines /*= false*/, UMaterialInterface* Material /*= nullptr*/, EDepthPriorityGroup DepthPriorityGroup /*= EDepthPriorityGroup::World*/, bool bDisableBackfaceCulling /*= false*/, const FDecalChannels& DecalChannels /*= FDecalChannels::MakeDisabled()*/)
+{
+	LevelViewportPrimitiveDrawingUtils::DrawTriangle(GetDrawPrimitivesContext(), PointA, PointB, PointC, Color, bDrawLines, Material, DepthPriorityGroup, bDisableBackfaceCulling, DecalChannels);
 }
 
 void ULevelEditorToolBase::DrawSphere(FDummyStruct DrawPrimitivesContext, FVector Center, float Radius /*= 50.0f*/, int32 NumSides /*= 16*/, int32 NumRings /*= 16*/, UMaterialInterface* Material /*= nullptr*/, EDepthPriorityGroup DepthPriorityGroup /*= EDepthPriorityGroup::World*/, bool bDisableBackfaceCulling /*= false*/)

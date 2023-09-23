@@ -122,9 +122,6 @@ FReply SPropertiesBrowser::OpenClassPickerDialog()
 	Options.DisplayMode = EClassViewerDisplayMode::ListView;
 	Options.bShowNoneOption = true;
 
-	TSharedPtr<FObjectClassFilter> Filter = MakeShareable(new FObjectClassFilter);
-	Options.ClassFilter = Filter;
-
 	const FText TitleText = LOCTEXT("PickBluEdModeUserWidgetClass", "Pick Ed Mode Widget Blueprint Class");
 	UClass* ChosenClass = nullptr;
 	const bool bPressedOk = SClassPickerDialog::PickClass(TitleText, Options, ChosenClass, UObject::StaticClass());

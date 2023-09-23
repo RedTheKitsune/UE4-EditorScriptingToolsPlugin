@@ -78,8 +78,7 @@ public:
 
 private:
 
-	void HandleEditorModeEntered(const FEditorModeID& ModeID);
-	void HandleEditorModeExited(const FEditorModeID& ModeID);
+	void HandleEditorModeChanged(const FEditorModeID& ModeID, bool bEntered);
 
 	void HandleMapOpened(const FString& Filename, bool bAsTemplate);
 
@@ -99,9 +98,9 @@ private:
 
 	void HandleAssetsPreDelete(const TArray<UObject*>& Assets);
 
-	void HandleFolderCreate(UWorld& InWorld, FName NewPath);
-	void HandleFolderMove(UWorld& InWorld, FName OldPath, FName NewPath);
-	void HandleFolderDelete(UWorld& InWorld, FName Path);
+	void HandleFolderCreated(UWorld& InWorld, const FFolder& NewPath);
+	void HandleFolderMoved(UWorld& InWorld, const FFolder& OldPath, const FFolder& NewPath);
+	void HandleFolderDeleted(UWorld& InWorld, const FFolder& Path);
 
 
 	void HandleActorSelectionChanged(const TArray<UObject*>& NewSelection, bool bForceRefresh = false);

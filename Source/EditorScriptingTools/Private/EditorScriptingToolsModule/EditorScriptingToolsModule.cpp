@@ -57,8 +57,6 @@
 const FName FEditorScriptingToolsModule::FEditorScriptingToolsTabs::ScriptingToolsSettingsTabID = TEXT("EditorScriptingToolsSubsystem");
 const FName FEditorScriptingToolsModule::FEditorScriptingToolsTabs::PlacementBrowser = TEXT("PlacementBrowser");
 
-
-
 IEditorScriptingToolsModule* IEditorScriptingToolsModule::GetPtr()
 {
 	return FEditorScriptingToolsModule::Singleton;
@@ -115,7 +113,7 @@ FName FEditorScriptingToolsModule::GetEditorScriptingToolsTabName() const
 	return FEditorScriptingToolsTabs::ScriptingToolsSettingsTabID;
 }
 
-uint32 FEditorScriptingToolsModule::GetEditorScriptingAssetCategory() const
+uint32 FEditorScriptingToolsModule::GetEditorScriptingAssetCategories() const
 {
 	if (IBlutilityModule* BlutilityModule = FModuleManager::GetModulePtr<IBlutilityModule>("Blutility"))
 	{
@@ -339,7 +337,7 @@ void FEditorScriptingToolsModule::BindEditorDelegates()
 	}
 
 	{
-		FEditorDelegates::EditorModeIDEnter.AddRaw(this, &FEditorScriptingToolsModule::HandleEditorModeEntered);
+		GLevelEditorModeTools().OnEditorModeIDChanged().AddRaw(this, &FEditorScriptingToolsModule::HandleEditorModeChanged);
 		FEditorDelegates::PreBeginPIE.AddRaw(this, &FEditorScriptingToolsModule::HandlePreBeginPIE);
 		FEditorDelegates::OnAssetsPreDelete.AddRaw(this, &FEditorScriptingToolsModule::HandleAssetsPreDelete);
 		FEditorDelegates::OnAssetsDeleted.AddRaw(this, &FEditorScriptingToolsModule::HandleAssetsDeleted);
@@ -377,7 +375,7 @@ void FEditorScriptingToolsModule::UnbindEditorDelegates()
 		GEditor->OnBlueprintCompiled().RemoveAll(this);
 	}
 
-	FEditorDelegates::EditorModeIDEnter.RemoveAll(this);
+	GLevelEditorModeTools().OnEditorModeIDChanged().RemoveAll(this);
 	FEditorDelegates::PreBeginPIE.RemoveAll(this);
 	FEditorDelegates::OnAssetsPreDelete.RemoveAll(this);
 	FEditorDelegates::OnAssetsDeleted.RemoveAll(this);
@@ -395,7 +393,7 @@ void FEditorScriptingToolsModule::HandleAnyBlueprintCompiled()
 }
 
 
-void FEditorScriptingToolsModule::HandleEditorModeEntered(const FEditorModeID& ModeID)
+void FEditorScriptingToolsModule::HandleEditorModeChanged(const FEditorModeID& ModeID, bool bEntered)
 {
 	
 }

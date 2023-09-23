@@ -31,7 +31,7 @@ uint32 FAssetTypeActions_EditorUserWidgetBlueprint::GetCategories()
 {
 	if (IEditorScriptingToolsModule* EditorScriptingToolsModulePtr = IEditorScriptingToolsModule::GetPtr())
 	{
-		return EditorScriptingToolsModulePtr->GetEditorScriptingAssetCategory();
+		return EditorScriptingToolsModulePtr->GetEditorScriptingAssetCategories();
 	}
 	return EAssetTypeCategories::UI;
 }

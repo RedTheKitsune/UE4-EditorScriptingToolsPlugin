@@ -374,7 +374,7 @@ void FEditorUserDefinedActionsEditor::InitEditor(const EToolkitMode::Type Mode, 
 				FTabManager::NewStack()
 				->SetSizeCoefficient(0.1f)
 				->SetHideTabWell(true)
-				->AddTab(GetToolbarTabId(), ETabState::OpenedTab)
+				->AddTab(GetToolMenuToolbarName(), ETabState::OpenedTab)
 			)
 			->Split
 			(
@@ -421,7 +421,10 @@ TSharedRef<SDockTab> FEditorUserDefinedActionsEditor::SpawnActionsTab(const FSpa
 	// Create a property view
 	FPropertyEditorModule& EditModule = FModuleManager::Get().GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
-	FDetailsViewArgs DetailsViewArgs( /*bUpdateFromSelection=*/ false, /*bLockable=*/ false, /*bAllowSearch=*/ false, FDetailsViewArgs::HideNameArea, /*bHideSelectionTip=*/ true);
+	FDetailsViewArgs DetailsViewArgs;
+	DetailsViewArgs.bAllowSearch = false;
+	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::HideNameArea;
+	DetailsViewArgs.bHideSelectionTip = true;
 	DetailsViewArgs.bShowOptions = false;
 
 	PropertyView = EditModule.CreateDetailView(DetailsViewArgs);
@@ -434,8 +437,7 @@ TSharedRef<SDockTab> FEditorUserDefinedActionsEditor::SpawnActionsTab(const FSpa
 	TAttribute<bool> IsEnabledAttribute = TAttribute<bool>(this, &FEditorUserDefinedActionsEditor::IsEditable);
 	PropertyView->SetEnabled(IsEnabledAttribute);
 
-	return SNew(SDockTab)
-		.Icon(FAppStyle::GetBrush("GenericEditor.Tabs.Properties"))
+	const TSharedRef<SDockTab> NewTab = SNew(SDockTab)
 		.Label(LOCTEXT("ActionsEditor", "Actions"))
 		[
 			SNew(SVerticalBox)
@@ -455,6 +457,9 @@ TSharedRef<SDockTab> FEditorUserDefinedActionsEditor::SpawnActionsTab(const FSpa
 				PropertyView.ToSharedRef()
 			]
 		];
+
+	NewTab->SetTabIcon(FAppStyle::GetBrush("GenericEditor.Tabs.Properties"));
+	return NewTab;
 }
 
 FEditorUserDefinedActionsEditor::~FEditorUserDefinedActionsEditor()

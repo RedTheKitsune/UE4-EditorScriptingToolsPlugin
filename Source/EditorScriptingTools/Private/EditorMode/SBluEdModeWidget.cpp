@@ -46,6 +46,7 @@
 #include "Widgets/Notifications/SErrorText.h"
 #include "EditorModeToolUtilityBlueprint.h"
 #include "LevelEditorUtils.h"
+#include "AssetRegistry/AssetRegistryModule.h"
 
 #define LOCTEXT_NAMESPACE "SBluEdModeWidget"
 
@@ -931,6 +932,93 @@ FText SBluEdModeWidget::GetSelectedClassName() const
 	return LOCTEXT("BluEdModeInactive_Text", "BluEdMode Inactive");
 }
 
+// Taken from UEditorUtilitySubsystem
+UClass* FindBlueprintClass(const FString& TargetNameRaw)
+{
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	IAssetRegistry& AssetRegistry = AssetRegistryModule.Get();
+	if (AssetRegistry.IsLoadingAssets())
+	{
+		AssetRegistry.SearchAllAssets(true);
+	}
+
+	FString TargetName = TargetNameRaw;
+	TargetName.RemoveFromEnd(TEXT("_C"), ESearchCase::CaseSensitive);
+
+	FARFilter Filter;
+	Filter.bRecursiveClasses = true;
+	Filter.ClassPaths.Add(UBlueprintCore::StaticClass()->GetClassPathName());
+
+	// We enumerate all assets to find any blueprints who inherit from native classes directly - or
+	// from other blueprints.
+	UClass* FoundClass = nullptr;
+	AssetRegistry.EnumerateAssets(Filter, [&FoundClass, TargetName](const FAssetData& AssetData)
+	{
+		if ((AssetData.AssetName.ToString() == TargetName) || (AssetData.GetObjectPathString() == TargetName))
+		{
+			if (UBlueprint* BP = Cast<UBlueprint>(AssetData.GetAsset()))
+			{
+				FoundClass = BP->GeneratedClass;
+				return false;
+			}
+		}
+
+		return true;
+	});
+
+	return FoundClass;
+}
+
+// Taken from UEditorUtilitySubsystem
+UClass* FindClassByName(const FString& RawTargetName)
+{
+	FString TargetName = RawTargetName;
+
+	// Check native classes and loaded assets first before resorting to the asset registry
+	bool bIsValidClassName = true;
+	if (TargetName.IsEmpty() || TargetName.Contains(TEXT(" ")))
+	{
+		bIsValidClassName = false;
+	}
+	else if (!FPackageName::IsShortPackageName(TargetName))
+	{
+		if (TargetName.Contains(TEXT(".")))
+		{
+			// Convert type'path' to just path (will return the full string if it doesn't have ' in it)
+			TargetName = FPackageName::ExportTextPathToObjectPath(TargetName);
+
+			FString PackageName;
+			FString ObjectName;
+			TargetName.Split(TEXT("."), &PackageName, &ObjectName);
+
+			const bool bIncludeReadOnlyRoots = true;
+			FText Reason;
+			if (!FPackageName::IsValidLongPackageName(PackageName, bIncludeReadOnlyRoots, &Reason))
+			{
+				bIsValidClassName = false;
+			}
+		}
+		else
+		{
+			bIsValidClassName = false;
+		}
+	}
+
+	UClass* ResultClass = nullptr;
+	if (bIsValidClassName)
+	{
+		ResultClass = UClass::TryFindTypeSlow<UClass>(TargetName);
+	}
+
+	// If we still haven't found anything yet, try the asset registry for blueprints that match the requirements
+	if (ResultClass == nullptr)
+	{
+		ResultClass = FindBlueprintClass(TargetName);
+	}
+
+	return ResultClass;
+}
+
 bool SBluEdModeWidget::OnAllowDropNewToolClass(TSharedPtr<FDragDropOperation> DragDropOperation)
 {
 	if (DragDropOperation.IsValid() && DragDropOperation->IsOfType<FAssetDragDropOp>())
@@ -947,7 +1035,7 @@ bool SBluEdModeWidget::OnAllowDropNewToolClass(TSharedPtr<FDragDropOperation> Dr
 				// Find the class/blueprint path
 				if (UnloadedClassOp->HasAssets())
 				{
-					AssetPath = UnloadedClassOp->GetAssets()[0].ObjectPath.ToString();
+					AssetPath = UnloadedClassOp->GetAssets()[0].GetSoftObjectPath().ToString();
 				}
 				else if (UnloadedClassOp->HasAssetPaths())
 				{
@@ -983,7 +1071,7 @@ bool SBluEdModeWidget::OnAllowDropNewToolClass(TSharedPtr<FDragDropOperation> Dr
 
 				if (!ClassPath.IsEmpty())
 				{
-					UClass* NewClass = FindObject<UClass>(ANY_PACKAGE, *ClassPath);
+					UClass* NewClass = FindClassByName(ClassPath);
 					if (!NewClass)
 					{
 						NewClass = LoadObject<UClass>(nullptr, *ClassPath);
@@ -1018,7 +1106,7 @@ FReply SBluEdModeWidget::OnDropNewToolClass(TSharedPtr<FDragDropOperation> DragD
 				// Find the class/blueprint path
 				if (UnloadedClassOp->HasAssets())
 				{
-					AssetPath = UnloadedClassOp->GetAssets()[0].ObjectPath.ToString();
+					AssetPath = UnloadedClassOp->GetAssets()[0].GetSoftObjectPath().ToString();
 				}
 				else if (UnloadedClassOp->HasAssetPaths())
 				{

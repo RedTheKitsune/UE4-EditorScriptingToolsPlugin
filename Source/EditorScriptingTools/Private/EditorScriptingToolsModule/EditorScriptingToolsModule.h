@@ -84,7 +84,7 @@ public:
 
 	//~ Begin IEditorScriptingToolsModule
 	virtual FName GetEditorScriptingToolsTabName() const override;
-	virtual uint32 GetEditorScriptingAssetCategory() const override;
+	virtual uint32 GetEditorScriptingAssetCategories() const override;
 	virtual bool IsPlacementBrowserTabActive() const override;
 	virtual void RequestRefreshPlacementBrowserTab() override;
 	virtual void RequestClosePlacementBrowserTab() override;
@@ -180,7 +180,7 @@ private:
 
 	void HandleAnyBlueprintPreCompiled(UBlueprint* Blueprint);
 	void HandleAnyBlueprintCompiled();
-	void HandleEditorModeEntered(const FEditorModeID& ModeID);
+	void HandleEditorModeChanged(const FEditorModeID& ModeID, bool bEntered);
 	void HandleMapChanged(UWorld* InWorld, EMapChangeType MapChangeType);
 	void HandleTabManagerChanged();
 	void HandlePreBeginPIE(bool bIsSimulating);

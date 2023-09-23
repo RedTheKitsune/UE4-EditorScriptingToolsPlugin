@@ -34,7 +34,7 @@ uint32 FEditorScriptingAssetTypeActions_Base::GetCategories()
 {
 	if (IEditorScriptingToolsModule* EditorScriptingToolsModulePtr = IEditorScriptingToolsModule::GetPtr())
 	{
-		return EditorScriptingToolsModulePtr->GetEditorScriptingAssetCategory();
+		return EditorScriptingToolsModulePtr->GetEditorScriptingAssetCategories();
 	}
 	return EAssetTypeCategories::Blueprint;
 }

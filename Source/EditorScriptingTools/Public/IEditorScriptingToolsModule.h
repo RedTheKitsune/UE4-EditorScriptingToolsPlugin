@@ -57,7 +57,7 @@ public:
 	/**
 	* Returns editor scripting assets category bit.
 	*/
-	virtual uint32 GetEditorScriptingAssetCategory() const = 0;
+	virtual uint32 GetEditorScriptingAssetCategories() const = 0;
 
 
 	virtual bool IsPlacementBrowserTabActive() const = 0;

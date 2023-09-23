@@ -34,7 +34,7 @@ namespace LevelViewportPrimitiveDrawingUtils
 		}
 	}
 
-	void DrawTriangle(const FDrawPrimitivesContext& Context, const FVector& PointA, const FVector& PointB, const FVector& PointC, const FLinearColor& Color, bool bDrawLines, UMaterialInterface* Material, EDepthPriorityGroup DepthPriorityGroup, bool bDisableBackfaceCulling, bool bReceivesDecals)
+	void DrawTriangle(const FDrawPrimitivesContext& Context, const FVector& PointA, const FVector& PointB, const FVector& PointC, const FLinearColor& Color, bool bDrawLines, UMaterialInterface* Material, EDepthPriorityGroup DepthPriorityGroup, bool bDisableBackfaceCulling, const FDecalChannels& DecalChannels)
 	{
 		if (FPrimitiveDrawInterface* PDI = Context.PDI)
 		{
@@ -52,7 +52,7 @@ namespace LevelViewportPrimitiveDrawingUtils
 
 			MeshBuilder.AddTriangle(0, 1, 2);
 
-			MeshBuilder.Draw(PDI, FMatrix::Identity, MaterialRenderProxy, CAST_TO_UINT8(DepthPriorityGroup), bDisableBackfaceCulling, bReceivesDecals);
+			MeshBuilder.Draw(PDI, FMatrix::Identity, MaterialRenderProxy, CAST_TO_UINT8(DepthPriorityGroup), bDisableBackfaceCulling, DecalChannels);
 
 			if (bDrawLines)
 			{

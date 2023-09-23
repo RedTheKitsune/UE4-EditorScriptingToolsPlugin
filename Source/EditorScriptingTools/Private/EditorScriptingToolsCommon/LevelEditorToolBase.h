@@ -50,7 +50,10 @@ public:
 		void DrawLine(FDummyStruct DrawPrimitivesContext, FVector Start, FVector End, FLinearColor Color = FLinearColor::White, EDepthPriorityGroup DepthPriorityGroup = EDepthPriorityGroup::World, float Thickness = 0.0f, float DepthBias = 0.0f);
 
 	UFUNCTION(BlueprintCallable, Category = "LevelEditingViewport|DrawPrimitives", meta = (HideSelfPin = "true"))
-		void DrawTriangle(FDummyStruct DrawPrimitivesContext, FVector PointA, FVector PointB, FVector PointC, FLinearColor Color = FLinearColor::White, bool bDrawLines = false, UMaterialInterface* Material = nullptr, EDepthPriorityGroup DepthPriorityGroup = EDepthPriorityGroup::World, bool bDisableBackfaceCulling = false, bool bReceivesDecals = false);
+		void DrawTriangle(FDummyStruct DrawPrimitivesContext, FVector PointA, FVector PointB, FVector PointC, FLinearColor Color = FLinearColor::White, bool bDrawLines = false, UMaterialInterface* Material = nullptr, EDepthPriorityGroup DepthPriorityGroup = EDepthPriorityGroup::World, bool bDisableBackfaceCulling = false);
+
+	UFUNCTION(BlueprintCallable, Category = "LevelEditingViewport|DrawPrimitives", meta = (HideSelfPin = "true"))
+		void DrawTriangleDecaled(FDummyStruct DrawPrimitivesContext, FVector PointA, FVector PointB, FVector PointC, FLinearColor Color, bool bDrawLines, UMaterialInterface* Material, EDepthPriorityGroup DepthPriorityGroup, bool bDisableBackfaceCulling, const FDecalChannels& DecalChannels);
 
 	UFUNCTION(BlueprintCallable, Category = "LevelEditingViewport|DrawPrimitives", meta = (HideSelfPin = "true"))
 		void DrawSphere(FDummyStruct DrawPrimitivesContext, FVector Center, float Radius = 50.0f, int32 NumSides = 16, int32 NumRings = 16, UMaterialInterface* Material = nullptr, EDepthPriorityGroup DepthPriorityGroup = EDepthPriorityGroup::World, bool bDisableBackfaceCulling = false);

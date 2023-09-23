@@ -21,7 +21,7 @@ namespace LevelViewportPrimitiveDrawingUtils
 
 	void DrawLine(const FDrawPrimitivesContext& Context, const FVector& Start, const FVector& End, const FLinearColor& Color, EDepthPriorityGroup DepthPriorityGroup, float Thickness, float DepthBias);
 
-	void DrawTriangle(const FDrawPrimitivesContext& Context, const FVector& PointA, const FVector& PointB, const FVector& PointC, const FLinearColor& Color, bool bDrawLines, UMaterialInterface* Material, EDepthPriorityGroup DepthPriorityGroup, bool bDisableBackfaceCulling, bool bReceivesDecals);
+	void DrawTriangle(const FDrawPrimitivesContext& Context, const FVector& PointA, const FVector& PointB, const FVector& PointC, const FLinearColor& Color, bool bDrawLines, UMaterialInterface* Material, EDepthPriorityGroup DepthPriorityGroup, bool bDisableBackfaceCulling, const FDecalChannels& DecalChannels);
 
 	void DrawSphere(const FDrawPrimitivesContext& Context, const FVector& Center, float Radius, int32 NumSides, int32 NumRings, UMaterialInterface* Material, EDepthPriorityGroup DepthPriorityGroup, bool bDisableBackfaceCulling);
 	void DrawWireSphere(const FDrawPrimitivesContext& Context, const FVector& Center, const FLinearColor& Color, float Radius, int32 NumSides, EDepthPriorityGroup DepthPriorityGroup, float Thickness, float DepthBias);
