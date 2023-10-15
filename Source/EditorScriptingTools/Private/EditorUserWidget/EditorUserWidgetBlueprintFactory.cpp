@@ -81,7 +81,10 @@ bool UEditorUserWidgetBlueprintFactory::ConfigureProperties()
 		Filter->AllowedChildrenOfClasses.Add(UPanelWidget::StaticClass());
 
 		const FText TitleText = LOCTEXT("CreateWidgetBlueprint", "Pick Root Widget for New Editor User Widget");
-		return SClassPickerDialog::PickClass(TitleText, Options, RootWidgetClass, UPanelWidget::StaticClass());
+		UClass* ChosenClass = nullptr;
+		const bool bSuccess = SClassPickerDialog::PickClass(TitleText, Options, ChosenClass, UPanelWidget::StaticClass());
+		RootWidgetClass = ChosenClass;
+		return bSuccess;
 
 	}
 	return true;

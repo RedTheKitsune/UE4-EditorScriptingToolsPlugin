@@ -193,7 +193,7 @@ private:
 
 private:
 	/** The target node that this argument is on */
-	UEditorUserDefinedActions* TargetActionsAsset;
+	TObjectPtr<UEditorUserDefinedActions> TargetActionsAsset;
 
 	/** Index of action */
 	int32 ActionIndex;

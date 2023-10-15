@@ -434,10 +434,10 @@ struct FActorHitProxyInfo
 	GENERATED_USTRUCT_BODY()
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ActorHitProxyInfo)
-		AActor* Actor;
+		TObjectPtr<AActor> Actor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ActorHitProxyInfo)
-		const UPrimitiveComponent* PrimitiveComponent;
+		TObjectPtr<const UPrimitiveComponent> PrimitiveComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ActorHitProxyInfo)
 		int32 SectionIndex;
