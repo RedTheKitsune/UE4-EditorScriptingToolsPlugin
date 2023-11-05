@@ -337,7 +337,10 @@ void FEditorScriptingToolsModule::BindEditorDelegates()
 	}
 
 	{
-		GLevelEditorModeTools().OnEditorModeIDChanged().AddRaw(this, &FEditorScriptingToolsModule::HandleEditorModeChanged);
+		if (!IsRunningCommandlet())
+		{
+			GLevelEditorModeTools().OnEditorModeIDChanged().AddRaw(this, &FEditorScriptingToolsModule::HandleEditorModeChanged);
+		}
 		FEditorDelegates::PreBeginPIE.AddRaw(this, &FEditorScriptingToolsModule::HandlePreBeginPIE);
 		FEditorDelegates::OnAssetsPreDelete.AddRaw(this, &FEditorScriptingToolsModule::HandleAssetsPreDelete);
 		FEditorDelegates::OnAssetsDeleted.AddRaw(this, &FEditorScriptingToolsModule::HandleAssetsDeleted);
@@ -375,7 +378,10 @@ void FEditorScriptingToolsModule::UnbindEditorDelegates()
 		GEditor->OnBlueprintCompiled().RemoveAll(this);
 	}
 
-	GLevelEditorModeTools().OnEditorModeIDChanged().RemoveAll(this);
+	if (!IsRunningCommandlet())
+	{
+		GLevelEditorModeTools().OnEditorModeIDChanged().RemoveAll(this);
+	}
 	FEditorDelegates::PreBeginPIE.RemoveAll(this);
 	FEditorDelegates::OnAssetsPreDelete.RemoveAll(this);
 	FEditorDelegates::OnAssetsDeleted.RemoveAll(this);

@@ -33,7 +33,10 @@ void UEditorEventsSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	//
 	{
-		GLevelEditorModeTools().OnEditorModeIDChanged().AddUObject(this, &UEditorEventsSubsystem::HandleEditorModeChanged);
+		if (!IsRunningCommandlet())
+		{
+			GLevelEditorModeTools().OnEditorModeIDChanged().AddUObject(this, &UEditorEventsSubsystem::HandleEditorModeChanged);
+		}
 		FEditorDelegates::OnMapOpened.AddUObject(this, &UEditorEventsSubsystem::HandleMapOpened);
 		FEditorDelegates::OnEditorCameraMoved.AddUObject(this, &UEditorEventsSubsystem::HandleEditorCameraMoved);
 		FEditorDelegates::OnDollyPerspectiveCamera.AddUObject(this, &UEditorEventsSubsystem::HandleDollyPerspectiveCamera);
@@ -80,7 +83,10 @@ void UEditorEventsSubsystem::Deinitialize()
 {
 	//
 	{
-		GLevelEditorModeTools().OnEditorModeIDChanged().RemoveAll(this);
+		if (!IsRunningCommandlet())
+		{
+			GLevelEditorModeTools().OnEditorModeIDChanged().RemoveAll(this);
+		}
 		FEditorDelegates::OnMapOpened.RemoveAll(this);
 		FEditorDelegates::OnEditorCameraMoved.RemoveAll(this);
 		FEditorDelegates::OnDollyPerspectiveCamera.RemoveAll(this);
