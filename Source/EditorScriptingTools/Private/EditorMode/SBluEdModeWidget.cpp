@@ -1071,7 +1071,7 @@ bool SBluEdModeWidget::OnAllowDropNewToolClass(TSharedPtr<FDragDropOperation> Dr
 
 				if (!ClassPath.IsEmpty())
 				{
-					UClass* NewClass = FindClassByName(ClassPath);
+					UClass* NewClass = FindObject<UClass>(nullptr, *ClassPath);
 					if (!NewClass)
 					{
 						NewClass = LoadObject<UClass>(nullptr, *ClassPath);

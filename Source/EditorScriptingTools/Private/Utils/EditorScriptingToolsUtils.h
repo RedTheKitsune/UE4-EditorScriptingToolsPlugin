@@ -10,7 +10,7 @@
 #include "UObject/Object.h"
 #include "UObject/ObjectMacros.h"
 #include "UObject/UObjectGlobals.h"
-#include "Templates/Casts.h"
+#include "UObject/Object.h"
 
 class IDetailLayoutBuilder;
 

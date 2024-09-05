@@ -20,6 +20,7 @@
 #include "EditorUserDefinedCommands.h"
 #include "EditorScriptingToolsUtils.h"
 #include "LevelEditingViewportUtils.h"
+#include "UObject/ObjectSaveContext.h"
 
 
 
@@ -264,14 +265,14 @@ void UEditorEventsSubsystem::HandleApplicationMousePreInputButtonDownListener(co
 	OnMouseButtonDown.Broadcast(MouseEvent, LevelEditingViewportUtils::IsEditingViewportFocused());
 }
 
-void UEditorEventsSubsystem::HandleWorldPreSaved(UWorld* World, FObjectPreSaveContext Context)
+void UEditorEventsSubsystem::HandleWorldPreSaved(UWorld* World, FObjectPreSaveContext ObjectSaveContext)
 {
 	OnPreSaveWorld.Broadcast(World);
 }
 
-void UEditorEventsSubsystem::HandleWorldPostSaved(UWorld* World, FObjectPostSaveContext Context)
+void UEditorEventsSubsystem::HandleWorldPostSaved(UWorld* World, FObjectPostSaveContext ObjectSaveContext)
 {
-	OnPostSaveWorld.Broadcast(World, Context.SaveSucceeded());
+	OnPostSaveWorld.Broadcast(World, ObjectSaveContext.SaveSucceeded());
 }
 
 void UEditorEventsSubsystem::HandleActionExecuted(UEditorUserDefinedActions* ActionsAsset, int32 ActionIndex , bool bIsRepeated)

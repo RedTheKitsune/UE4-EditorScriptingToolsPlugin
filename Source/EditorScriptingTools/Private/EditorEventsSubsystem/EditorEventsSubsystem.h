@@ -14,6 +14,8 @@
 
 
 class UEditorUserDefinedActions;
+class FObjectPreSaveContext;
+class FObjectPostSaveContext;
 class AActor;
 class UWorld;
 enum class EMapChangeType : uint8;
@@ -110,8 +112,8 @@ private:
 	void HandleApplicationPreInputKeyDownListener(const FKeyEvent& InKeyEvent);
 	void HandleApplicationMousePreInputButtonDownListener(const FPointerEvent& MouseEvent);
 
-	void HandleWorldPreSaved(UWorld* World, FObjectPreSaveContext Context);
-	void HandleWorldPostSaved(UWorld* World, FObjectPostSaveContext Context);
+	void HandleWorldPreSaved(UWorld* World, FObjectPreSaveContext ObjectSaveContext);
+	void HandleWorldPostSaved(UWorld* World, FObjectPostSaveContext ObjectSaveContext);
 
 	void HandleActionExecuted(UEditorUserDefinedActions* ActionsAsset, int32 ActionIndex, bool bIsRepeated);
 
